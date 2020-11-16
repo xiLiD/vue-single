@@ -1,0 +1,1881 @@
+/* required styles */
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.leaflet-container {
+    overflow: hidden;
+    /*TODO: 新增*/
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+    background: transparent;
+}
+
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+    image-rendering: -webkit-optimize-contrast;
+}
+
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+    width: 1600px;
+    height: 1600px;
+    -webkit-transform-origin: 0 0;
+}
+
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+    display: block;
+}
+
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg,
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+    -ms-touch-action: pan-x pan-y;
+    touch-action: pan-x pan-y;
+}
+
+.leaflet-container.leaflet-touch-drag {
+    -ms-touch-action: pinch-zoom;
+    /* Fallback for FF which doesn't support pinch-zoom */
+    touch-action: none;
+    touch-action: pinch-zoom;
+}
+
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+    -ms-touch-action: none;
+    touch-action: none;
+}
+
+.leaflet-container {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.leaflet-container a {
+    -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+
+.leaflet-tile {
+    filter: inherit;
+    visibility: hidden;
+}
+
+.leaflet-tile-loaded {
+    visibility: inherit;
+}
+
+.leaflet-zoom-box {
+    width: 0;
+    height: 0;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 800;
+}
+
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+    -moz-user-select: none;
+}
+
+.leaflet-pane {
+    z-index: 400;
+}
+
+.leaflet-tile-pane {
+    z-index: 200;
+}
+
+.leaflet-overlay-pane {
+    z-index: 400;
+}
+
+.leaflet-shadow-pane {
+    z-index: 500;
+}
+
+.leaflet-marker-pane {
+    z-index: 600;
+}
+
+.leaflet-tooltip-pane {
+    z-index: 650;
+}
+
+.leaflet-popup-pane {
+    z-index: 700;
+}
+
+.leaflet-map-pane canvas {
+    z-index: 100;
+}
+
+.leaflet-map-pane svg {
+    z-index: 200;
+}
+
+.leaflet-vml-shape {
+    width: 1px;
+    height: 1px;
+}
+
+.lvml {
+    behavior: url(#default#VML);
+    display: inline-block;
+    position: absolute;
+}
+
+
+/* control positioning */
+
+.leaflet-control {
+    position: relative;
+    z-index: 800;
+    pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+    pointer-events: auto;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.leaflet-top {
+    top: 0;
+}
+
+.leaflet-right {
+    right: 0;
+}
+
+.leaflet-bottom {
+    bottom: 0;
+}
+
+.leaflet-left {
+    left: 0;
+}
+
+.leaflet-control {
+    float: left;
+    clear: both;
+}
+
+.leaflet-right .leaflet-control {
+    float: right;
+}
+
+.leaflet-top .leaflet-control {
+    margin-top: 10px;
+}
+
+.leaflet-bottom .leaflet-control {
+    margin-bottom: 10px;
+}
+
+.leaflet-left .leaflet-control {
+    margin-left: 10px;
+}
+
+.leaflet-right .leaflet-control {
+    margin-right: 10px;
+}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-tile {
+    will-change: opacity;
+}
+
+.leaflet-fade-anim .leaflet-popup {
+    opacity: 0;
+    -webkit-transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+}
+
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+    opacity: 1;
+}
+
+.leaflet-zoom-animated {
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+    will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+    -webkit-transition: -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+    -moz-transition: -moz-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+    transition: transform 0.25s cubic-bezier(0, 0, 0.25, 1);
+}
+
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+    visibility: hidden;
+}
+
+
+/* cursors */
+
+.leaflet-interactive {
+    cursor: pointer;
+}
+
+.leaflet-grab {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+}
+
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+    cursor: crosshair;
+}
+
+.leaflet-popup-pane,
+.leaflet-control {
+    cursor: auto;
+}
+
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+    cursor: move;
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
+}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+    pointer-events: none;
+}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+    pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+    pointer-events: auto;
+}
+
+/* visual tweaks */
+
+.leaflet-container {
+    background: #101129;
+    outline: 0;
+}
+
+.leaflet-container a {
+    color: #0078A8;
+}
+
+.leaflet-container a.leaflet-active {
+    outline: 2px solid orange;
+}
+
+.leaflet-zoom-box {
+    border: 2px dotted #38f;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+
+/* general typography */
+.leaflet-container {
+    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+    border-radius: 4px;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.leaflet-bar a:hover {
+    background-color: #f4f4f4;
+}
+
+.leaflet-bar a:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.leaflet-bar a:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom: none;
+}
+
+.leaflet-bar a.leaflet-disabled {
+    cursor: default;
+    background-color: #f4f4f4;
+    color: #bbb;
+}
+
+.leaflet-touch .leaflet-bar a {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.leaflet-touch .leaflet-bar a:first-child {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.leaflet-touch .leaflet-bar a:last-child {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+    font: bold 18px 'Lucida Console', Monaco, monospace;
+    text-indent: 1px;
+}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
+    font-size: 22px;
+}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+    background: #fff;
+    border-radius: 5px;
+}
+
+.leaflet-control-layers-toggle {
+    background-image: url(../images/layers.png);
+    width: 36px;
+    height: 36px;
+}
+
+.leaflet-retina .leaflet-control-layers-toggle {
+    background-image: url(../images/layers-2x.png);
+    background-size: 26px 26px;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle {
+    width: 44px;
+    height: 44px;
+}
+
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+    display: none;
+}
+
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+    display: block;
+    position: relative;
+}
+
+.leaflet-control-layers-expanded {
+    padding: 6px 10px 6px 6px;
+    color: #333;
+    background: #fff;
+}
+
+.leaflet-control-layers-scrollbar {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.leaflet-control-layers-selector {
+    margin-top: 2px;
+    position: relative;
+    top: 1px;
+}
+
+.leaflet-control-layers label {
+    display: block;
+}
+
+.leaflet-control-layers-separator {
+    height: 0;
+    border-top: 1px solid #ddd;
+    margin: 5px -10px 5px -6px;
+}
+
+/* Default icon URLs */
+.leaflet-default-icon-path {
+    background-image: url(../images/marker-icon.png);
+}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+    background: #fff;
+    background: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+    padding: 0 5px;
+    color: #333;
+}
+
+.leaflet-control-attribution a {
+    text-decoration: none;
+}
+
+.leaflet-control-attribution a:hover {
+    text-decoration: underline;
+}
+
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-scale {
+    font-size: 11px;
+}
+
+.leaflet-left .leaflet-control-scale {
+    margin-left: 5px;
+}
+
+.leaflet-bottom .leaflet-control-scale {
+    margin-bottom: 5px;
+}
+
+.leaflet-control-scale-line {
+    border: 2px solid #777;
+    border-top: none;
+    line-height: 1.1;
+    padding: 2px 5px 1px;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    background: #fff;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.leaflet-control-scale-line:not(:first-child) {
+    border-top: 2px solid #777;
+    border-bottom: none;
+    margin-top: -2px;
+}
+
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+    border-bottom: 2px solid #777;
+}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+    box-shadow: none;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    background-clip: padding-box;
+}
+
+
+/* popup */
+
+.leaflet-popup {
+    position: absolute;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.leaflet-popup-content-wrapper {
+    padding: 1px;
+    text-align: left;
+    border-radius: 12px;
+}
+
+.leaflet-popup-content {
+    margin: 13px 19px;
+    line-height: 1.4;
+}
+
+.leaflet-popup-content p {
+    margin: 18px 0;
+}
+
+.leaflet-popup-tip-container {
+    width: 40px;
+    height: 20px;
+    position: absolute;
+    left: 50%;
+    margin-left: -20px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.leaflet-popup-tip {
+    width: 17px;
+    height: 17px;
+    padding: 1px;
+
+    margin: -10px auto 0;
+
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    background: white;
+    color: #333;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px 4px 0 0;
+    border: none;
+    text-align: center;
+    width: 18px;
+    height: 14px;
+    font: 16px/14px Tahoma, Verdana, sans-serif;
+    color: #c3c3c3;
+    text-decoration: none;
+    font-weight: bold;
+    background: transparent;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+    color: #999;
+}
+
+.leaflet-popup-scrolled {
+    overflow: auto;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+    zoom: 1;
+}
+
+.leaflet-oldie .leaflet-popup-tip {
+    width: 24px;
+    margin: 0 auto;
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+    filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+}
+
+.leaflet-oldie .leaflet-popup-tip-container {
+    margin-top: -1px;
+}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+    border: 1px solid #999;
+}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+    background: #fff;
+    border: 1px solid #666;
+}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+    position: absolute;
+    padding: 6px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    color: #222;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-tooltip.leaflet-clickable {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+    position: absolute;
+    pointer-events: none;
+    border: 6px solid transparent;
+    background: transparent;
+    content: "";
+}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+    margin-top: 6px;
+}
+
+.leaflet-tooltip-top {
+    margin-top: -6px;
+}
+
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+    left: 50%;
+    margin-left: -6px;
+}
+
+.leaflet-tooltip-top:before {
+    bottom: 0;
+    margin-bottom: -12px;
+    border-top-color: #fff;
+}
+
+.leaflet-tooltip-bottom:before {
+    top: 0;
+    margin-top: -12px;
+    margin-left: -6px;
+    border-bottom-color: #fff;
+}
+
+.leaflet-tooltip-left {
+    margin-left: -6px;
+}
+
+.leaflet-tooltip-right {
+    margin-left: 6px;
+}
+
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+    top: 50%;
+    margin-top: -6px;
+}
+
+.leaflet-tooltip-left:before {
+    right: 0;
+    margin-right: -12px;
+    border-left-color: #fff;
+}
+
+.leaflet-tooltip-right:before {
+    left: 0;
+    margin-left: -12px;
+    border-right-color: #fff;
+}
+
+/*闪烁图*/
+.leaflet-pulsing-icon {
+    border-radius: 100%;
+    box-shadow: 1px 1px 8px 0 rgba(0, 0, 0, 0.75)
+}
+
+.leaflet-pulsing-icon:after {
+    content: "";
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    height: 300%;
+    width: 300%;
+    position: absolute;
+    margin: -100% 0 0 -100%
+}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(0.1, 0.1);
+        opacity: 0;
+        -ms-filter: "alpha(opacity=0)";
+        filter: alpha(opacity=0)
+    }
+    50% {
+        opacity: 1;
+        -ms-filter: none;
+        filter: none
+    }
+    100% {
+        transform: scale(1.2, 1.2);
+        opacity: 0;
+        -ms-filter: "alpha(opacity=0)";
+        filter: alpha(opacity=0)
+    }
+}
+
+/*闪烁图*/
+
+/*在线编辑器 codemirror.css*/
+.CodeMirror {
+    font-family: monospace;
+    height: 300px;
+    color: black;
+    direction: ltr
+}
+
+.CodeMirror-lines {
+    padding: 4px 0
+}
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
+    padding: 0 4px
+}
+
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+    background-color: white
+}
+
+.CodeMirror-gutters {
+    border-right: 1px solid #ddd;
+    background-color: #f7f7f7;
+    white-space: nowrap
+}
+
+.CodeMirror-linenumber {
+    padding: 0 3px 0 5px;
+    min-width: 20px;
+    text-align: right;
+    color: #999;
+    white-space: nowrap
+}
+
+.CodeMirror-guttermarker {
+    color: black
+}
+
+.CodeMirror-guttermarker-subtle {
+    color: #999
+}
+
+.CodeMirror-cursor {
+    border-left: 1px solid black;
+    border-right: 0;
+    width: 0
+}
+
+.CodeMirror div.CodeMirror-secondarycursor {
+    border-left: 1px solid silver
+}
+
+.cm-fat-cursor .CodeMirror-cursor {
+    width: auto;
+    border: 0 !important;
+    background: #7e7
+}
+
+.cm-fat-cursor div.CodeMirror-cursors {
+    z-index: 1
+}
+
+.cm-fat-cursor-mark {
+    background-color: rgba(20, 255, 20, 0.5);
+    -webkit-animation: blink 1.06s steps(1) infinite;
+    -moz-animation: blink 1.06s steps(1) infinite;
+    animation: blink 1.06s steps(1) infinite
+}
+
+.cm-animate-fat-cursor {
+    width: auto;
+    border: 0;
+    -webkit-animation: blink 1.06s steps(1) infinite;
+    -moz-animation: blink 1.06s steps(1) infinite;
+    animation: blink 1.06s steps(1) infinite;
+    background-color: #7e7
+}
+
+@-moz-keyframes blink {
+    50% {
+        background-color: transparent
+    }
+}
+
+@-webkit-keyframes blink {
+    50% {
+        background-color: transparent
+    }
+}
+
+@keyframes blink {
+    50% {
+        background-color: transparent
+    }
+}
+
+.cm-tab {
+    display: inline-block;
+    text-decoration: inherit
+}
+
+.CodeMirror-rulers {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -50px;
+    bottom: 0;
+    overflow: hidden
+}
+
+.CodeMirror-ruler {
+    border-left: 1px solid #ccc;
+    top: 0;
+    bottom: 0;
+    position: absolute
+}
+
+.cm-s-default .cm-header {
+    color: blue
+}
+
+.cm-s-default .cm-quote {
+    color: #090
+}
+
+.cm-negative {
+    color: #d44
+}
+
+.cm-positive {
+    color: #292
+}
+
+.cm-header, .cm-strong {
+    font-weight: bold
+}
+
+.cm-em {
+    font-style: italic
+}
+
+.cm-link {
+    text-decoration: underline
+}
+
+.cm-strikethrough {
+    text-decoration: line-through
+}
+
+.cm-s-default .cm-keyword {
+    color: #708
+}
+
+.cm-s-default .cm-atom {
+    color: #219
+}
+
+.cm-s-default .cm-number {
+    color: #164
+}
+
+.cm-s-default .cm-def {
+    color: #00f
+}
+
+.cm-s-default .cm-variable-2 {
+    color: #05a
+}
+
+.cm-s-default .cm-variable-3, .cm-s-default .cm-type {
+    color: #085
+}
+
+.cm-s-default .cm-comment {
+    color: #a50
+}
+
+.cm-s-default .cm-string {
+    color: #a11
+}
+
+.cm-s-default .cm-string-2 {
+    color: #f50
+}
+
+.cm-s-default .cm-meta {
+    color: #555
+}
+
+.cm-s-default .cm-qualifier {
+    color: #555
+}
+
+.cm-s-default .cm-builtin {
+    color: #30a
+}
+
+.cm-s-default .cm-bracket {
+    color: #997
+}
+
+.cm-s-default .cm-tag {
+    color: #170
+}
+
+.cm-s-default .cm-attribute {
+    color: #00c
+}
+
+.cm-s-default .cm-hr {
+    color: #999
+}
+
+.cm-s-default .cm-link {
+    color: #00c
+}
+
+.cm-s-default .cm-error {
+    color: #f00
+}
+
+.cm-invalidchar {
+    color: #f00
+}
+
+.CodeMirror-composing {
+    border-bottom: 2px solid
+}
+
+div.CodeMirror span.CodeMirror-matchingbracket {
+    color: #0b0
+}
+
+div.CodeMirror span.CodeMirror-nonmatchingbracket {
+    color: #a22
+}
+
+.CodeMirror-matchingtag {
+    background: rgba(255, 150, 0, .3)
+}
+
+.CodeMirror-activeline-background {
+    background: #e8f2ff
+}
+
+.CodeMirror {
+    position: relative;
+    overflow: hidden;
+    background: white
+}
+
+.CodeMirror-scroll {
+    overflow: scroll !important;
+    margin-bottom: -30px;
+    margin-right: -30px;
+    padding-bottom: 30px;
+    height: 100%;
+    outline: 0;
+    position: relative
+}
+
+.CodeMirror-sizer {
+    position: relative;
+    border-right: 30px solid transparent
+}
+
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+    position: absolute;
+    z-index: 6;
+    display: none
+}
+
+.CodeMirror-vscrollbar {
+    right: 0;
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: scroll
+}
+
+.CodeMirror-hscrollbar {
+    bottom: 0;
+    left: 0;
+    overflow-y: hidden;
+    overflow-x: scroll
+}
+
+.CodeMirror-scrollbar-filler {
+    right: 0;
+    bottom: 0
+}
+
+.CodeMirror-gutter-filler {
+    left: 0;
+    bottom: 0
+}
+
+.CodeMirror-gutters {
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-height: 100%;
+    z-index: 3
+}
+
+.CodeMirror-gutter {
+    white-space: normal;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: -30px
+}
+
+.CodeMirror-gutter-wrapper {
+    position: absolute;
+    z-index: 4;
+    background: none !important;
+    border: none !important
+}
+
+.CodeMirror-gutter-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 4
+}
+
+.CodeMirror-gutter-elt {
+    position: absolute;
+    cursor: default;
+    z-index: 4
+}
+
+.CodeMirror-gutter-wrapper::selection {
+    background-color: transparent
+}
+
+.CodeMirror-gutter-wrapper::-moz-selection {
+    background-color: transparent
+}
+
+.CodeMirror-lines {
+    cursor: text;
+    min-height: 1px
+}
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border-width: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 0;
+    white-space: pre;
+    word-wrap: normal;
+    line-height: inherit;
+    color: inherit;
+    z-index: 2;
+    position: relative;
+    overflow: visible;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-variant-ligatures: contextual;
+    font-variant-ligatures: contextual
+}
+
+.CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-like {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: normal
+}
+
+.CodeMirror-linebackground {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 0
+}
+
+.CodeMirror-linewidget {
+    position: relative;
+    z-index: 2;
+    padding: .1px
+}
+
+.CodeMirror-rtl pre {
+    direction: rtl
+}
+
+.CodeMirror-code {
+    outline: 0
+}
+
+.CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutters, .CodeMirror-linenumber {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box
+}
+
+.CodeMirror-measure {
+    position: absolute;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden
+}
+
+.CodeMirror-cursor {
+    position: absolute;
+    pointer-events: none
+}
+
+.CodeMirror-measure pre {
+    position: static
+}
+
+div.CodeMirror-cursors {
+    visibility: hidden;
+    position: relative;
+    z-index: 3
+}
+
+div.CodeMirror-dragcursors {
+    visibility: visible
+}
+
+.CodeMirror-focused div.CodeMirror-cursors {
+    visibility: visible
+}
+
+.CodeMirror-selected {
+    background: #d9d9d9
+}
+
+.CodeMirror-focused .CodeMirror-selected {
+    background: #d7d4f0
+}
+
+.CodeMirror-crosshair {
+    cursor: crosshair
+}
+
+.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection {
+    background: #d7d4f0
+}
+
+.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection {
+    background: #d7d4f0
+}
+
+.cm-searching {
+    background-color: #ffa;
+    background-color: rgba(255, 255, 0, .4)
+}
+
+.cm-force-border {
+    padding-right: .1px
+}
+
+@media print {
+    .CodeMirror div.CodeMirror-cursors {
+        visibility: hidden
+    }
+}
+
+.cm-tab-wrap-hack:after {
+    content: ''
+}
+
+span.CodeMirror-selectedtext {
+    background: 0
+}
+
+/*在线编辑器 codemirror.css*/
+
+/*在线编辑器 foldgutter.css 代码折叠*/
+.CodeMirror-foldmarker {
+    color: blue;
+    text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+    font-family: arial, serif;
+    line-height: .3;
+    cursor: pointer
+}
+
+
+.CodeMirror-foldgutter {
+    width: .7em
+}
+
+.CodeMirror-foldgutter-open, .CodeMirror-foldgutter-folded {
+    cursor: pointer
+}
+
+.CodeMirror-foldgutter-open:after {
+    content: "\25BE"
+}
+
+.CodeMirror-foldgutter-folded:after {
+    content: "\25B8"
+}
+
+/*在线编辑器 foldgutter.css 代码折叠*/
+
+/*在线编辑器 dracula.css 主题样式*/
+.cm-s-dracula.CodeMirror, .cm-s-dracula .CodeMirror-gutters {
+    background-color: #282a36 !important;
+    color: #f8f8f2 !important;
+    border: 0
+}
+
+.cm-s-dracula .CodeMirror-gutters {
+    color: #282a36
+}
+
+.cm-s-dracula .CodeMirror-cursor {
+    border-left: solid thin #f8f8f0
+}
+
+.cm-s-dracula .CodeMirror-linenumber {
+    color: #6d8a88
+}
+
+.cm-s-dracula .CodeMirror-selected {
+    background: rgba(255, 255, 255, 0.10)
+}
+
+.cm-s-dracula .CodeMirror-line::selection, .cm-s-dracula .CodeMirror-line > span::selection, .cm-s-dracula .CodeMirror-line > span > span::selection {
+    background: rgba(255, 255, 255, 0.10)
+}
+
+.cm-s-dracula .CodeMirror-line::-moz-selection, .cm-s-dracula .CodeMirror-line > span::-moz-selection, .cm-s-dracula .CodeMirror-line > span > span::-moz-selection {
+    background: rgba(255, 255, 255, 0.10)
+}
+
+.cm-s-dracula span.cm-comment {
+    color: #6272a4
+}
+
+.cm-s-dracula span.cm-string, .cm-s-dracula span.cm-string-2 {
+    color: #f1fa8c
+}
+
+.cm-s-dracula span.cm-number {
+    color: #bd93f9
+}
+
+.cm-s-dracula span.cm-variable {
+    color: #50fa7b
+}
+
+.cm-s-dracula span.cm-variable-2 {
+    color: white
+}
+
+.cm-s-dracula span.cm-def {
+    color: #50fa7b
+}
+
+.cm-s-dracula span.cm-operator {
+    color: #ff79c6
+}
+
+.cm-s-dracula span.cm-keyword {
+    color: #ff79c6
+}
+
+.cm-s-dracula span.cm-atom {
+    color: #bd93f9
+}
+
+.cm-s-dracula span.cm-meta {
+    color: #f8f8f2
+}
+
+.cm-s-dracula span.cm-tag {
+    color: #ff79c6
+}
+
+.cm-s-dracula span.cm-attribute {
+    color: #50fa7b
+}
+
+.cm-s-dracula span.cm-qualifier {
+    color: #50fa7b
+}
+
+.cm-s-dracula span.cm-property {
+    color: #66d9ef
+}
+
+.cm-s-dracula span.cm-builtin {
+    color: #50fa7b
+}
+
+.cm-s-dracula span.cm-variable-3, .cm-s-dracula span.cm-type {
+    color: #ffb86c
+}
+
+.cm-s-dracula .CodeMirror-activeline-background {
+    background: rgba(255, 255, 255, 0.1)
+}
+
+.cm-s-dracula .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: white !important
+}
+
+/*在线编辑器 dracula.css 主题样式*/
+
+/*自定义菜单树样式  第二套样式*/
+.lds-menu {
+    z-index: 1;
+    background-color: #ffffff;
+    padding: 6px 10px 6px 0;
+    overflow: auto;
+    border: 1px solid #dadada;
+    border-radius: 0 0 4px 4px;
+    box-sizing: border-box;
+
+    -ms-overflow-style: none; /*火狐下隐藏滚动条*/
+    overflow: -moz-scrollbars-none;
+}
+
+.lds-menu::-webkit-scrollbar {
+    width: 0;
+}
+
+.lds-btn {
+    z-index: 1;
+    text-align: center;
+    color: #ffffff;
+    background-color: #d4d4d4;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    position: absolute;
+}
+
+.lds-btn:hover {
+    background-color: #bababa;
+}
+
+.lds-btn .span-tip {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: calc(100% + 20px);
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.lds-btn:hover .span-tip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lds-btn .span-tip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+
+.lds-title-div {
+    border-radius: 4px;
+    border: 1px solid #bababa;
+    margin: 10px 0 10px 10px;
+}
+
+.lds-title, .lds-title-leaf {
+    margin: 0;
+    width: auto;
+    height: 50px;
+    line-height: 50px;
+    color: #000000;
+    cursor: pointer;
+    padding-left: 10px;
+    border-radius: 4px;
+    /*border: 1px solid #bababa;*/
+}
+
+.lds-title-leaf {
+    padding-left: 20px;
+}
+
+.lds-title:hover {
+    color: #ffffff;
+    background-color: #d4d4d4;
+}
+
+.leaf-active, .lds-title-leaf:hover {
+    color: #ffffff;
+    background-color: #d4d4d4;
+}
+
+/* 第一套样式
+.lds-menu {
+    z-index: 1;
+    background-color: #ffffff;
+    padding: 6px 10px 6px 0;
+    overflow: auto;
+    border: 1px solid #dadada;
+    border-radius: 0 0 4px 4px;
+    box-sizing: border-box;
+
+    -ms-overflow-style: none; !*火狐下隐藏滚动条*!
+    overflow: -moz-scrollbars-none;
+}
+
+.lds-menu::-webkit-scrollbar {
+    width: 0;
+}
+
+.lds-btn {
+    z-index: 1;
+    text-align: center;
+    color: #ffffff;
+    background-color: #d4d4d4;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    position: absolute;
+}
+
+.lds-btn:hover {
+    background-color: #bababa;
+}
+
+.lds-btn .span-tip {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: calc(100% + 20px);
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.lds-btn:hover .span-tip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lds-btn .span-tip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+
+.lds-title, .lds-title-leaf {
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+    margin: 4px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    padding-left: 10px;
+    border: 1px solid #bababa;
+    color: #000000;
+}
+
+.title-active, .lds-title:hover {
+    color: #ffffff;
+    background-color: #d4d4d4;
+}
+
+.leaf-active, .lds-title-leaf:hover {
+    color: #ffffff;
+    background-color: #bababa;
+}
+*/
+
+/*自定义 CheckBox 样式*/
+input[class=lds-checkbox][type=checkbox] {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    visibility: hidden;
+    appearance: none;
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+}
+
+input[class=lds-checkbox][type=checkbox]:after {
+    width: 100%;
+    height: 100%;
+    content: '';
+    margin-top: -3px;
+    color: #bababa;
+    background-color: #ffffff;
+    display: inline-block;
+    visibility: visible;
+    border-radius: 4px;
+    border: 1px solid #d4d4d4;
+}
+
+input[class=lds-checkbox][type=checkbox][disabled=disabled]:after {
+    background-color: #e7e7e7;
+}
+
+input[class=lds-checkbox][type=checkbox]:checked:after {
+    content: "\2713"; /*UNICODE 中对号*/
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/*自定义 CheckBox 样式*/
+
+/*自定义上下箭头*/
+/*下箭头*/
+.down-arrow {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 30px;
+    margin-right: 20px;
+}
+
+.down-arrow::after {
+    display: inline-block;
+    content: '';
+    height: 18px;
+    width: 18px;
+    border-width: 0 2px 2px 0;
+    border-color: #bababa;
+    border-style: solid;
+    transform: rotate(45deg) scale(.6);
+    transform-origin: center;
+    transition: transform .3s;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -12px;
+}
+
+/*加上 active 旋转成上箭头*/
+.down-arrow.active::after {
+    transform-origin: center;
+    transform: rotate(-135deg) scale(.6);
+    transition: transform .3s;
+    margin-top: -6px;
+    border-color: #ffffff;
+}
+
+/*自定义上下箭头*/
+
+/*加载中样式*/
+.loading {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    display: inline-block;
+    margin: 11px 10px;
+    float: right;
+}
+
+.loading i {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: lightgreen;
+    position: absolute;
+    -webkit-animation: load 1.04s ease infinite;
+}
+
+@-webkit-keyframes load {
+    0% {
+        -webkit-transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(.3);
+        opacity: 0.5;
+    }
+}
+
+.loading i:nth-child(1) {
+    left: 0;
+    top: 50%;
+    margin-top: -3px;
+    -webkit-animation-delay: 0.13s;
+}
+
+.loading i:nth-child(2) {
+    left: 3px;
+    top: 3px;
+    -webkit-animation-delay: 0.26s;
+}
+
+.loading i:nth-child(3) {
+    left: 50%;
+    top: 0;
+    margin-left: -3px;
+    -webkit-animation-delay: 0.39s;
+}
+
+.loading i:nth-child(4) {
+    top: 3px;
+    right: 3px;
+    -webkit-animation-delay: 0.52s;
+}
+
+.loading i:nth-child(5) {
+    right: 0;
+    top: 50%;
+    margin-top: -3px;
+    -webkit-animation-delay: 0.65s;
+}
+
+.loading i:nth-child(6) {
+    right: 3px;
+    bottom: 3px;
+    -webkit-animation-delay: 0.78s;
+}
+
+.loading i:nth-child(7) {
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+    -webkit-animation-delay: 0.91s;
+}
+
+.loading i:nth-child(8) {
+    bottom: 3px;
+    left: 3px;
+    -webkit-animation-delay: 1.04s;
+}
+
+/*自定义菜单树样式*/
+
+/*色块图颜色等级列表样式*/
+.color-level {
+    z-index: 410;
+    width: 140px;
+    max-height: 200px;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    font-size: 12px;
+    overflow: auto;
+}
+
+.color-level-line {
+    width: calc(100% - 16px);
+    height: 26px;
+    line-height: 22px;
+    margin: 4px 8px 0;
+}
+
+.color-level-line .color {
+    display: block;
+    height: 4px;
+    background-color: #0000cc;
+}
+
+.color-level-line .word {
+    display: block;
+    height: 20px;
+}
+
+/*色块图颜色等级列表样式*/
+
+/*markercluster 样式*/
+.leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
+    -webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
+    -moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
+    -o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+}
+
+.leaflet-cluster-spider-leg {
+    -webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;
+    -moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;
+    -o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
+    transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
+}
+
+.marker-cluster-small {
+    background-color: rgba(181, 226, 140, 0.6);
+}
+
+.marker-cluster-small div {
+    background-color: rgba(110, 204, 57, 0.6);
+}
+
+.marker-cluster-medium {
+    background-color: rgba(241, 211, 87, 0.6);
+}
+
+.marker-cluster-medium div {
+    background-color: rgba(240, 194, 12, 0.6);
+}
+
+.marker-cluster-large {
+    background-color: rgba(253, 156, 115, 0.6);
+}
+
+.marker-cluster-large div {
+    background-color: rgba(241, 128, 23, 0.6);
+}
+
+.leaflet-oldie .marker-cluster-small {
+    background-color: rgb(181, 226, 140);
+}
+
+.leaflet-oldie .marker-cluster-small div {
+    background-color: rgb(110, 204, 57);
+}
+
+.leaflet-oldie .marker-cluster-medium {
+    background-color: rgb(241, 211, 87);
+}
+
+.leaflet-oldie .marker-cluster-medium div {
+    background-color: rgb(240, 194, 12);
+}
+
+.leaflet-oldie .marker-cluster-large {
+    background-color: rgb(253, 156, 115);
+}
+
+.leaflet-oldie .marker-cluster-large div {
+    background-color: rgb(241, 128, 23);
+}
+
+.marker-cluster {
+    background-clip: padding-box;
+    border-radius: 20px;
+}
+
+.marker-cluster div {
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: center;
+    border-radius: 15px;
+    font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.marker-cluster span {
+    line-height: 30px;
+}
+
+/*markercluster 样式*/
+
+/*点簇图自定义颜色样式*/
+.marker-cluster-customize div {
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background-color: red;
+}
+
+/*点簇图自定义颜色样式*/

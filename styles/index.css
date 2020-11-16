@@ -1,0 +1,38 @@
+body{
+  background-color: aliceblue;
+  overflow: hidden!important;
+}
+.orgTable{
+  width: 100%;
+}
+.orgTable thead tr th{
+  background-color: rgba(245,245,245,1);
+  height: 30px;
+  padding: 3px 0;
+}
+.sortTable thead tr th {
+  background-color: rgba(245,245,245,1);
+  height: 30px;
+  padding: 0px 0;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped td{
+  background: rgb(239, 240, 241)
+}
+.el-table td{
+	border-bottom: none;
+}
+.el-table::before {
+  bottom: auto
+}
+.el-tabs__item {
+	padding: 0 20px;
+	height: 40px;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 40px;
+	display: inline-block;
+	list-style: none;
+	font-size: 14px;
+	color: #495060;
+	position: relative;
+}
