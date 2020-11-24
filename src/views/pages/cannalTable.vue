@@ -238,7 +238,6 @@
 
 <script>
 import apiSend from "@/api/axios.js";
-import axios from "axios";
 import { download } from "@/api/export.js";
 import base from "@/api/baseUrl";
 import { mapState } from "vuex";
@@ -383,7 +382,7 @@ export default {
           if (this.modalInfo.title == "新增框") {
             apiSend
               .canalInsertProdInfo({ data: this.ruleForm })
-              .then((res) => {
+              .then(() => {
                 this.modalInfo.show = false;
                 this.$message.success("新增成功!");
                 this.findTable();
@@ -394,7 +393,7 @@ export default {
           } else {
             apiSend
               .canalUpdateChnlInfo({ data: this.ruleForm })
-              .then((res) => {
+              .then(() => {
                 this.modalInfo.show = false;
                 this.$message.success("修改成功!");
                 this.findTable();
@@ -417,7 +416,12 @@ export default {
             this.dialogTableVisible = false;
             this.$message.success(res.data.data.msg);
           } else {
-            let { code, msg, ...result } = res.data.data;
+            let {
+              code, // eslint-disable-line
+              msg, // eslint-disable-line
+              ...result
+            } = res.data.data;
+            // console.log(code,msg)
             Object.keys(result).forEach((key) => {
               arr.push(result[key]);
             });
@@ -433,8 +437,6 @@ export default {
         });
     },
     httpRequest(data) {
-      let _this = this;
-      let file = data.file;
       this.fileData = {
         excelFile: data.file,
       };
@@ -447,7 +449,10 @@ export default {
           this.$refs.upload.clearFiles();
           let arr = [];
           // let result = res.data.data
-          let { code, ...result } = res.data.data;
+          let {
+            code, // eslint-disable-line
+            ...result
+          } = res.data.data;
           if (code == "0") {
             this.checkPass = true;
             arr.push(result.msg);
@@ -458,7 +463,7 @@ export default {
           }
           this.notice = arr;
         })
-        .catch((err) => {
+        .catch(() => {
           // this.$message.error(err.data.msg)
         });
     },
@@ -487,7 +492,7 @@ export default {
           };
           apiSend
             .canalRemoveChnlByCode({ data: params })
-            .then((res) => {
+            .then(() => {
               this.$message.success("删除成功!");
               this.findTable();
             })
@@ -512,7 +517,7 @@ export default {
           };
           apiSend
             .canalRemoveChnlByCode({ data: params })
-            .then((res) => {
+            .then(() => {
               this.$message.success("删除成功!");
               this.findTable();
             })
@@ -525,7 +530,11 @@ export default {
         });
     },
     handleEdit(index, row) {
-      let { operationtime, operationuser, ...result } = row;
+      let {
+        operationtime, // eslint-disable-line
+        operationuser, // eslint-disable-line
+        ...result
+      } = row;
       let self = this;
       self.$nextTick(() => {
         self.$refs.ruleForm.resetFields();

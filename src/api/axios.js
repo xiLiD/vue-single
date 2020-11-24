@@ -1,7 +1,12 @@
-import { requestGet, requestPost, requestFile, requestExcel } from "./request";
+import {
+  requestGet, // eslint-disable-line
+  requestPost,
+  requestFile,
+  requestExcel // eslint-disable-line
+} from "./request";
 import url from "./url";
 import base from "@/api/baseUrl";
-
+console.log(url)
 function getParams(params) {
   let baseUrl = process.env.NODE_ENV === "development" ? base.development : base.production;
   return Object.assign(
@@ -13,6 +18,22 @@ function getParams(params) {
     }
   );
 }
+function getJSONParams(params) {
+  let baseUrl = process.env.NODE_ENV === "development" ? base.development : base.production;
+  return Object.assign(
+    {},
+    {
+      url: baseUrl + params.url,
+      data: params.data,
+      showLoading: params.showLoading
+    }
+  );
+}
+const getJSON = function (params = {}) {
+  params.url = url.getJSON;
+  console.log(requestGet(getJSONParams(params)))
+  return requestGet(getJSONParams(params));
+};
 const loginSso = function (params) {
   params.url = url.loginSso;
   return requestPost(getParams(params));
@@ -119,4 +140,5 @@ export default {
   canalCheckChnnlInfo,
   canalRemoveChnlByCode,
   prodRemoveProdByCode,
+  getJSON
 };

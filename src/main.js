@@ -4,6 +4,7 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import store from "./store/index";
+
 import {
   timestampToTime3,
   timestampToTime,
@@ -11,15 +12,19 @@ import {
 } from "@/utils/index";
 import element from '@/UI/ElementUI/template.js' // element-ui UI组件按需引入
 import * as filters from "./filters"; // global filters
-import "element-ui/lib/theme-chalk/index.css";
+
 import "@/styles/common.css";
 import "@/styles/index.css";
+
+import '@/utils/utils-webpack/console/rewriteConsole'
+import '@/utils/utils-webpack/console/vConsole'
 
 Vue.use(element); // global css
 Vue.config.productionTip = false;
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key]);
 });
+console.dir(Vue.filter)
 
 Vue.prototype.$formatSeconds = formatSeconds;
 Vue.prototype.$timestampToTime3 = timestampToTime3;

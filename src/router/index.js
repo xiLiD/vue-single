@@ -10,10 +10,9 @@ const originalReplace = Router.prototype.replace;
 Router.prototype.replace = function push(location) {
   return originalReplace.call(this, location).catch(err => err);
 };
-const webpackInfo = require('@/utils/webpack') 
-import webpack from "../utils/webpack";
+const webpackInfo = require('@/utils/webpack')
 export default new Router({
-  mode: 'hash', 
+  mode: 'hash',
   routes: [
     // {
     // path: "/",

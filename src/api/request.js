@@ -4,6 +4,9 @@ import store from "../store";
 import {
   Message
 } from "element-ui";
+// JSBI - 官方ECMAScript BigInt提案的纯JavaScript实现
+import JSBI from 'jsbi';
+import JSONbigString from 'json-bigint'
 // import commonConfig from '../config.js';
 const loadingTime = 500;
 const timeOut = 5000
@@ -29,12 +32,19 @@ httpRequest.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-//
+httpRequest.defaults.transformResponse = [function (data) {
+  //这里的data是字符串，在这个字符串的是没有丢失精度的，所以需要在这里先把精度调好
+  try {
+    return JSONbigString.parse(data)
+  } catch (err) {
+    return data;
+  }
+}]
 httpRequest.interceptors.response.use(
   res => {
     // 状态码 200
     // debugger
-    // console.log(123)
+    console.log(res.config)
     Vue.$httpLoading.close();
     // 普通接口类型 => 成功
     // 根据后端不同返回值 进行逻辑判断
@@ -92,7 +102,7 @@ httpRequest.interceptors.response.use(
       }
     }
     else if (error.message.indexOf('timeout') !== -1) {
-      error.msg = "请求超时!"
+      error.msg = "网络请求超时!"
     }
     else {
       error.msg = "连接服务器失败!";
@@ -104,13 +114,10 @@ httpRequest.interceptors.response.use(
 );
 
 function checkLoading(config) {
-
   let loading = config.showLoading || config.showLoading === undefined ?
     true :
     config.showLoading
-  console.log(loading)
   return loading
-
 }
 
 // 请求接口的动画加载  并返回数据
@@ -126,11 +133,11 @@ function resolveData(showLoading, config, callBack) {
       }, time);
     } else {
       Vue.$httpLoading.close();
-      resolve(config);
+      resolve(config); d
     }
   }).then(res => {
     // 执行回调
-    callBack(res)
+    return callBack(res)
   })
 }
 
@@ -152,7 +159,7 @@ export function requestGet(config) {
       params: res.data
     }, {
       timeout: config.timeOut || timeOut
-    });
+    })
   })
 }
 

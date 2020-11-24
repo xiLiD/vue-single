@@ -45,6 +45,7 @@ import {
     RadioButton
 
 } from 'element-ui'
+import "element-ui/lib/theme-chalk/index.css";
 const element = {
     install: function (Vue) {
         Vue.use(Select)

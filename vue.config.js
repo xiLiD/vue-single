@@ -7,7 +7,7 @@ function resolve(dir) {
 const Happypack = require('happypack');
 
 // 代码压缩
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 // gzip压缩
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
@@ -70,22 +70,23 @@ module.exports = {
         'vue-router': 'VueRouter',
         'axios': 'axios'
       }
-      // 代码压缩
-      config.plugins.push(
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            //生产环境自动删除console
-            compress: {
-              warnings: false, // 若打包错误，则注释这行
-              drop_debugger: true,
-              drop_console: true,
-              pure_funcs: ['console.log'],
-            },
-          },
-          sourceMap: false,
-          parallel: true,
-        })
-      );
+
+      // // 代码压缩
+      // config.plugins.push(
+      //   new UglifyJsPlugin({
+      //     uglifyOptions: {
+      //       //生产环境自动删除console
+      //       compress: {
+      //         warnings: false, // 若打包错误，则注释这行
+      //         drop_debugger: true,
+      //         drop_console: true,
+      //         pure_funcs: ['console.log'],
+      //       },
+      //     },
+      //     sourceMap: false,
+      //     parallel: true,
+      //   })
+      // );
 
       // gzip压缩
       const productionGzipExtensions = ['html', 'js', 'css'];

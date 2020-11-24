@@ -236,6 +236,7 @@
 </template>
 <script>
 import apiSend from "@/api/axios.js";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -283,9 +284,20 @@ export default {
           console.log(err);
         });
     },
+    getJson() {
+      // axios.get("../../data.json").then((res) => {
+      //   console.log(res);
+      // },{
+
+      // });
+      apiSend.getJSON().then((res) => {
+        console.log(res.data.data.num.toString());
+      });
+    },
   },
   created() {
-    this.findTable();
+    // this.findTable();
+    this.getJson();
   },
 };
 </script>
